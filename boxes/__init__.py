@@ -37,6 +37,7 @@ from shapely.ops import split
 
 from boxes import edges, formats, gears, parts, pulley
 from boxes.Color import *
+from boxes.edges import FingerJointEdgeCounterPart
 from boxes.qrcode_factory import BoxesQrCodeFactory
 from boxes.vectors import kerf
 
@@ -2465,6 +2466,7 @@ class Boxes:
             self.hexHolesRectangle(x - 2 * holesMargin, y - 2 * holesMargin, settings=holesSettings)
 
         self.move(overallwidth, overallheight, move, label=label)
+        FingerJointEdgeCounterPart.draw_num = 0
 
     def flangedWall(self, x, y, edges="FFFF", flanges=None, r=0.0,
                callback=None, move=None, label=""):

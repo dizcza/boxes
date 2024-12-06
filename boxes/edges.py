@@ -928,7 +928,8 @@ class FingerJointEdge(BaseEdge, FingerJointBase):
     description = "Finger Joint"
     positive = True
 
-    def draw_finger(self, f, h, style, positive: bool = True, firsthalf: bool = True) -> None:
+    def draw_finger(self, f, h, style, finger_count: int, positive: bool = True, firsthalf: bool = True) -> None:
+        print(self.__class__)
         t = self.settings.thickness
 
         if positive:
@@ -997,6 +998,7 @@ class FingerJointEdge(BaseEdge, FingerJointBase):
 
         d = (bedBoltSettings or self.bedBoltSettings)[0]
 
+        print(f"{fingers=}")
         for i in range(fingers):
             if i != 0:
                 if not positive and bedBolts and bedBolts.drawBolt(i):
@@ -1007,7 +1009,7 @@ class FingerJointEdge(BaseEdge, FingerJointBase):
                     self.bedBoltHole(s, bedBoltSettings)
                 else:
                     self.edge(s)
-            self.draw_finger(f, h, style,
+            self.draw_finger(f, h, style, fingers,
                              positive, i < fingers // 2)
 
         self.edge(leftover / 2.0, tabs=1)
@@ -1031,6 +1033,18 @@ class FingerJointEdgeCounterPart(FingerJointEdge):
     char = 'F'
     description = "Finger Joint (opposing side)"
     positive = False
+
+    draw_num = 0
+    h_breadboard = 1.6
+
+    def draw_finger(self, f, h, style, finger_count: int, positive: bool = True, firsthalf: bool = True) -> None:
+        print(self.__class__, self.draw_num)
+        if finger_count == 1 and FingerJointEdgeCounterPart.draw_num == 2:
+            h = self.h_breadboard
+        if finger_count == 3 and FingerJointEdgeCounterPart.draw_num >= finger_count:
+            h = self.h_breadboard
+        FingerJointEdgeCounterPart.draw_num += 1
+        super().draw_finger(f, h, style, finger_count, positive, firsthalf)
 
 
 class FingerHoles(FingerJointBase):
