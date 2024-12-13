@@ -27,8 +27,8 @@ class MyUniversalBox(_TopEdge):
 
     def left_wall_holes(self, h_hole_usb=7.5):
         hole_width = 16
-        self.rectangularHole(self.y - hole_width - 0.1, self.h - h_hole_usb + self.thickness, hole_width + 1, h_hole_usb + 1, center_y=False,
-                             center_x=False)
+        self.rectangularHole(self.y - hole_width + 0.2, self.h - h_hole_usb + self.thickness,
+                             hole_width + .15, h_hole_usb + .5, center_y=False, center_x=False)
         x_step, hole_size = 4, 1.5
         nc = 14
         offset = (self.y - nc * x_step) / 2
@@ -51,13 +51,13 @@ class MyUniversalBox(_TopEdge):
         with self.saved_context():
             self.rectangularWall(x, h, [b, sideedge, tf, sideedge],
                                  ignore_widths=[1, 6],
-                                 move="up", label="front", callback=[])
+                                 move="up", label="", callback=[])
             self.rectangularWall(x, h, [b, sideedge, tb, sideedge],
                                  ignore_widths=[1, 6],
-                                 move="up", label="back", callback=[])
+                                 move="up", label="", callback=[])
 
             callback_bottom = lambda: self.hole(self.x / 2, 70, r=7.05)
-            self.rectangularWall(x, y, "ffff", move="up", label="Bottom", callback=[callback_bottom])
+            self.rectangularWall(x, y, "ffff", move="up", label="", callback=[callback_bottom])
             self.lid(x, y, self.top_edge)
 
         self.rectangularWall(x, h, [b, sideedge, tf, sideedge],
@@ -65,10 +65,10 @@ class MyUniversalBox(_TopEdge):
                              move="right only", label="invisible")
         self.rectangularWall(y, h, [b, "f", tl, "f"],
                              ignore_widths=[1, 6],
-                             move="up", label="left", callback=[self.left_wall_holes])
+                             move="up", label="", callback=[self.left_wall_holes])
         self.rectangularWall(y, h, [b, "f", tr, "f"],
                              ignore_widths=[1, 6],
-                             move="up", label="right", callback=[])
+                             move="up", label="", callback=[])
 
 
 thickness = 4.0
@@ -76,16 +76,21 @@ x = 45
 y = 120
 z = 30
 
-file_format = "svg"
+file_format = "dxf"
 
 b = MyUniversalBox()
 b.parseArgs(['--reference=0', '--FingerJoint_finger=4', '--FingerJoint_surroundingspaces=2', '--FingerJoint_space=4',
              f'--format={file_format}', '--debug=0', f'--thickness={thickness}', '--top_edge=F', '--bottom_edge=F',
-             f'--x={x}', f'--y={y}', f'--h={z}', '--outside=1', '--Hinge_style=flush'])
+             f'--x={x}', f'--y={y}', f'--h={z}', '--outside=1', '--Hinge_style=flush', '--burn=-0.05'])
 # b.parseArgs()
 b.open()
 b.render()
 data = b.close()
 
+print(data)
+
 with open(f'flashlight.{file_format}', "wb") as f:
-    f.write(data.getbuffer())
+    if file_format == "svg":
+        f.write(data.getbuffer())
+    else:
+        f.write(data.read())

@@ -929,7 +929,6 @@ class FingerJointEdge(BaseEdge, FingerJointBase):
     positive = True
 
     def draw_finger(self, f, h, style, finger_count: int, positive: bool = True, firsthalf: bool = True) -> None:
-        print(self.__class__)
         t = self.settings.thickness
 
         if positive:
@@ -998,7 +997,6 @@ class FingerJointEdge(BaseEdge, FingerJointBase):
 
         d = (bedBoltSettings or self.bedBoltSettings)[0]
 
-        print(f"{fingers=}")
         for i in range(fingers):
             if i != 0:
                 if not positive and bedBolts and bedBolts.drawBolt(i):
