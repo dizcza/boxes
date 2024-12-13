@@ -1035,7 +1035,7 @@ class FingerJointEdgeCounterPart(FingerJointEdge):
     positive = False
 
     draw_num = 0
-    h_breadboard = 1.6
+    h_breadboard = 1.75
 
     def draw_finger(self, f, h, style, finger_count: int, positive: bool = True, firsthalf: bool = True) -> None:
         print(self.__class__, self.draw_num)

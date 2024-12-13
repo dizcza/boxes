@@ -25,8 +25,9 @@ class MyUniversalBox(_TopEdge):
             choices=("finger joints", "finger holes"),
             help="connections used for the vertical edges")
 
-    def left_wall_holes(self, h_hole_usb=6.5):
-        self.rectangularHole(self.y - 16, self.h - h_hole_usb + self.thickness, 16, h_hole_usb, center_y=False,
+    def left_wall_holes(self, h_hole_usb=7.5):
+        hole_width = 16
+        self.rectangularHole(self.y - hole_width - 0.1, self.h - h_hole_usb + self.thickness, hole_width + 1, h_hole_usb + 1, center_y=False,
                              center_x=False)
         x_step, hole_size = 4, 1.5
         nc = 14
